@@ -1,1 +1,627 @@
+<title>La Multi Ani Alex</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap">
+
+<style>
+/* ── layout: fullscreen slide deck, one slide per view ── */
+:root {
+  --bg:        #0a0a12;
+  --bg-card:   #12121f;
+  --fg:        #f0eeff;
+  --muted:     #8a87a8;
+  --gold:      #f6c94e;
+  --violet:    #9b7cf8;
+  --rose:      #f56b8b;
+  --teal:      #4ecdc4;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:       #faf8ff;
+    --bg-card:  #f0eeff;
+    --fg:       #1a1830;
+    --muted:    #6b6890;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg:       #faf8ff;
+  --bg-card:  #f0eeff;
+  --fg:       #1a1830;
+  --muted:    #6b6890;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+}
+
+/* ── deck container ── */
+.deck {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── individual slides ── */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+  padding-block: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(.4,0,.2,1), transform 0.6s cubic-bezier(.4,0,.2,1);
+  transform: translateX(60px);
+  will-change: opacity, transform;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+.slide.exit {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+/* ── background canvas particles ── */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── slide content above canvas ── */
+.slide-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 640px;
+  width: 100%;
+}
+
+/* ── typography ── */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 11vw, 96px);
+  font-weight: 900;
+  line-height: 1;
+  text-wrap: balance;
+  margin-bottom: 20px;
+}
+.hero-sub {
+  font-size: clamp(14px, 2.5vw, 18px);
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto 36px;
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 7vw, 60px);
+  font-weight: 700;
+  line-height: 1.1;
+  text-wrap: balance;
+  margin-bottom: 16px;
+}
+.slide-body {
+  font-size: clamp(14px, 2.3vw, 17px);
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ── gradient text ── */
+.grad-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--rose) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.grad-violet {
+  background: linear-gradient(135deg, var(--violet) 0%, var(--teal) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── big number ── */
+.big-num {
+  font-family: var(--font-display);
+  font-size: clamp(80px, 22vw, 180px);
+  font-weight: 900;
+  line-height: 1;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ── cards row ── */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 28px;
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid rgba(155,124,248,.18);
+  border-radius: 16px;
+  padding: 20px 24px;
+  min-width: 140px;
+  max-width: 200px;
+  flex: 1 1 140px;
+  text-align: left;
+}
+.card-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+.card-label {
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.card-value { font-size: 15px; font-weight: 500; line-height: 1.4; }
+
+/* ── wish list ── */
+.wishes {
+  list-style: none;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.wish {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 14px 18px;
+  border: 1px solid rgba(246,201,78,.12);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.slide.active .wish { opacity: 1; transform: none; }
+.wish:nth-child(1) { transition-delay: .1s; }
+.wish:nth-child(2) { transition-delay: .22s; }
+.wish:nth-child(3) { transition-delay: .34s; }
+.wish:nth-child(4) { transition-delay: .46s; }
+.wish-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.wish-text { font-size: 14px; line-height: 1.5; color: var(--fg); }
+
+/* ── confetti burst ── */
+.confetti-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* ── progress dots ── */
+.dots {
+  position: fixed;
+  bottom: max(28px, env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  opacity: 0.4;
+  transition: opacity .3s, background .3s, transform .3s;
+  cursor: pointer;
+}
+.dot.on {
+  opacity: 1;
+  background: var(--gold);
+  transform: scale(1.35);
+}
+
+/* ── nav arrows ── */
+.nav {
+  position: fixed;
+  bottom: max(28px, env(safe-area-inset-bottom, 0px));
+  z-index: 10;
+  background: var(--bg-card);
+  border: 1px solid rgba(155,124,248,.2);
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--fg);
+  font-size: 18px;
+  transition: background .2s, border-color .2s, opacity .2s;
+  user-select: none;
+}
+.nav:hover { background: rgba(155,124,248,.2); border-color: var(--violet); }
+.nav.disabled { opacity: 0.25; pointer-events: none; }
+#nav-prev { left: max(24px, env(safe-area-inset-left, 0px)); }
+#nav-next { right: max(24px, env(safe-area-inset-right, 0px)); }
+
+/* ── slide 1: hero cake emoji ── */
+.cake-wrap {
+  font-size: clamp(64px, 18vw, 120px);
+  margin-bottom: 20px;
+  display: block;
+  animation: float 3.4s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* ── slide 3: firework svg ── */
+.firework-wrap {
+  width: min(220px, 55vw);
+  height: min(220px, 55vw);
+  margin: 0 auto 24px;
+}
+
+/* ── ribbon top ── */
+.ribbon {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--violet), var(--gold), var(--rose), var(--teal));
+  z-index: 20;
+}
+
+/* ── slide count label ── */
+.slide-count {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  right: max(20px, env(safe-area-inset-right, 0px));
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .1em;
+  z-index: 10;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide { transition: none; }
+  .cake-wrap { animation: none; }
+  .wish { transition: none; opacity: 1; transform: none; }
+}
+</style>
+
+<!-- background canvas -->
+<canvas id="particles"></canvas>
+
+<div class="ribbon"></div>
+<span class="slide-count" id="slide-count">1 / 5</span>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1: Welcome -->
+  <div class="slide active" id="s0">
+    <div class="slide-inner">
+      <span class="cake-wrap">🎂</span>
+      <p class="eyebrow">O zi specială</p>
+      <h1 class="hero-title"><span class="grad-gold">La Mulți Ani,</span><br>Alex!</h1>
+      <p class="hero-sub">Astăzi este ziua ta și nimeni nu ți-o poate lua. Bucură-te de fiecare moment! 🎉</p>
+      <button class="nav" style="position:static;margin:0 auto;width:auto;padding:0 28px;border-radius:40px;font-size:14px;font-weight:500;height:46px;" onclick="go(1)">Descoperă →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Numarul magic -->
+  <div class="slide" id="s1">
+    <div class="slide-inner">
+      <p class="eyebrow">Un an în plus</p>
+      <span class="big-num grad-violet" id="age-num">?</span>
+      <h2 class="slide-title">de ani de poveste</h2>
+      <p class="slide-body">Fiecare an vine cu lecții noi, amintiri noi și oameni care îți fac viața mai frumoasă. Acesta nu va fi altfel.</p>
+      <div class="cards" style="margin-top:32px;">
+        <div class="card">
+          <span class="card-icon">✨</span>
+          <div class="card-label">Vârstă</div>
+          <div class="card-value" id="age-label">O zi mai înțelept</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🌍</span>
+          <div class="card-label">Rotații în jurul Soarelui</div>
+          <div class="card-value" id="trips-val">?</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">💓</span>
+          <div class="card-label">Bătăi de inimă (aprox.)</div>
+          <div class="card-value" id="hearts-val">?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Artificii / mesaj -->
+  <div class="slide" id="s2">
+    <div class="slide-inner">
+      <div class="firework-wrap">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+          <defs>
+            <radialGradient id="gf1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#f6c94e" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#f56b8b" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="gf2" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#9b7cf8"/>
+              <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- outer ring -->
+          <circle cx="100" cy="100" r="85" fill="none" stroke="rgba(155,124,248,.15)" stroke-width="1"/>
+          <!-- rays -->
+          <g id="rays" stroke-linecap="round">
+            <line x1="100" y1="20" x2="100" y2="52" stroke="#f6c94e" stroke-width="2.5">
+              <animate attributeName="stroke-dasharray" values="0 32;32 0;32 0" dur="1.8s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.8s" repeatCount="indefinite"/>
+            </line>
+            <line x1="163" y1="37" x2="147" y2="65" stroke="#f56b8b" stroke-width="2.5" transform="rotate(0,100,100)">
+              <animate attributeName="stroke-dasharray" values="0 32;32 0;32 0" dur="1.8s" begin="0.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="0.2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="180" y1="100" x2="148" y2="100" stroke="#9b7cf8" stroke-width="2.5">
+              <animate attributeName="stroke-dasharray" values="0 32;32 0;32 0" dur="1.8s" begin="0.4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="0.4s" repeatCount="indefinite"/>
+            </line>
+            <line x1="163" y1="163" x2="147" y2="135" stroke="#4ecdc4" stroke-width="2.5">
+              <animate attributeName="stroke-dasharray" values="0 32;32 0;32 0" dur="1.8s" begin="0.6s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="0.6s" repeatCount="indefinite"/>
+            </line>
+            <line x1="100" y1="180" x2="100" y2="148" stroke="#f6c94e" stroke-width="2.5">
+              <animate attributeName="stroke-dasharray" values="0 32;32 0;32 0" dur="1.8s" begin="0.8s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="0.8s" repeatCount="indefinite"/>
+            </line>
+            <line x1="37" y1="163" x2="53" y2="135" stroke="#f56b8b" stroke-width="2.5">
+              <animate attributeName="stroke-dasharray" values="0 32;32 0;32 0" dur="1.8s" begin="1s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="1s" repeatCount="indefinite"/>
+            </line>
+            <line x1="20" y1="100" x2="52" y2="100" stroke="#9b7cf8" stroke-width="2.5">
+              <animate attributeName="stroke-dasharray" values="0 32;32 0;32 0" dur="1.8s" begin="1.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="1.2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="37" y1="37" x2="53" y2="65" stroke="#4ecdc4" stroke-width="2.5">
+              <animate attributeName="stroke-dasharray" values="0 32;32 0;32 0" dur="1.8s" begin="1.4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="1.4s" repeatCount="indefinite"/>
+            </line>
+          </g>
+          <!-- center star -->
+          <circle cx="100" cy="100" r="18" fill="url(#gf1)">
+            <animate attributeName="r" values="14;22;14" dur="2.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".7;1;.7" dur="2.4s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="100" cy="100" r="10" fill="url(#gf2)">
+            <animate attributeName="r" values="8;13;8" dur="2.4s" begin="0.4s" repeatCount="indefinite"/>
+          </circle>
+          <text x="100" y="106" text-anchor="middle" font-size="20" fill="white" font-family="serif">✦</text>
+        </svg>
+      </div>
+      <p class="eyebrow">Din toată inima</p>
+      <h2 class="slide-title"><em>Tu ești <span class="grad-gold">lumina</span></em></h2>
+      <p class="slide-body">Oameni ca tine fac diferența — cu zâmbetul tău, cu energia ta și cu modul în care îi faci pe ceilalți să se simtă speciali. Lumea e mai bine cu tine în ea.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Urări -->
+  <div class="slide" id="s3">
+    <div class="slide-inner">
+      <p class="eyebrow">Urări pentru tine</p>
+      <h2 class="slide-title">Ce îți doresc</h2>
+      <ul class="wishes">
+        <li class="wish">
+          <span class="wish-icon">🌟</span>
+          <span class="wish-text">Sănătate de fier și energie să faci tot ce visezi</span>
+        </li>
+        <li class="wish">
+          <span class="wish-icon">🚀</span>
+          <span class="wish-text">Proiecte care te aprind și rezultate care te surprind</span>
+        </li>
+        <li class="wish">
+          <span class="wish-icon">❤️</span>
+          <span class="wish-text">Oameni în viața ta care să te susțină în orice moment</span>
+        </li>
+        <li class="wish">
+          <span class="wish-icon">🎯</span>
+          <span class="wish-text">Un an în care fiecare obiectiv devine realitate</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Final -->
+  <div class="slide" id="s4">
+    <div class="slide-inner">
+      <p style="font-size:clamp(56px,16vw,100px);margin-bottom:16px;">🥂</p>
+      <p class="eyebrow">Încheiere</p>
+      <h2 class="slide-title"><span class="grad-rose" style="background:linear-gradient(135deg,var(--rose),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">La mulți ani,<br>Alex!</span></h2>
+      <p class="slide-body" style="margin-top:16px;margin-bottom:36px;">Că acest an să-ți aducă tot ce meriți — și poate puțin mai mult. 🎊</p>
+      <button onclick="launchConfetti(); this.textContent='🎊 Sărbătoresc!'; this.disabled=true;"
+        style="background:linear-gradient(135deg,var(--violet),var(--rose));border:none;color:white;padding:14px 32px;border-radius:40px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--font-body);">
+        🎉 Sărbătorește!
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- dots & nav -->
+<div class="dots" id="dots"></div>
+<button class="nav disabled" id="nav-prev" onclick="go(currentSlide-1)" aria-label="Înapoi">←</button>
+<button class="nav" id="nav-next" onclick="go(currentSlide+1)" aria-label="Înainte">→</button>
+
+<!-- confetti canvas overlay -->
+<canvas class="confetti-wrap" id="confetti-canvas"></canvas>
+
+<script>
+// ── particles background ──
+(function(){
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  let W, H, pts=[];
+  const COLS = ['#9b7cf8','#f6c94e','#f56b8b','#4ecdc4'];
+  function resize(){
+    W=c.width=window.innerWidth; H=c.height=window.innerHeight;
+    pts = Array.from({length:60},()=>({
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.6+0.4,
+      vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+      col:COLS[Math.floor(Math.random()*COLS.length)],
+      a: Math.random()*.5+.1
+    }));
+  }
+  resize(); window.addEventListener('resize',resize);
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.col;
+      ctx.globalAlpha=p.a;
+      ctx.fill();
+    });
+    ctx.globalAlpha=1;
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+// ── age calculations ──
+(function(){
+  const today = new Date();
+  const age = 23; // placeholder — zi frumoas
+  document.getElementById('age-num').textContent = age;
+  document.getElementById('age-label').textContent = age + ' ani minunați';
+  document.getElementById('trips-val').textContent = age + ' rotații complete';
+  const beats = (age * 365.25 * 24 * 60 * 72 / 1e6).toFixed(1) + 'M';
+  document.getElementById('hearts-val').textContent = beats;
+})();
+
+// ── slide deck logic ──
+const slides = document.querySelectorAll('.slide');
+const dotsEl = document.getElementById('dots');
+const countEl = document.getElementById('slide-count');
+let currentSlide = 0;
+let transitioning = false;
+
+// build dots
+slides.forEach((_,i)=>{
+  const d = document.createElement('button');
+  d.className='dot'+(i===0?' on':'');
+  d.setAttribute('aria-label','Slide '+(i+1));
+  d.onclick=()=>go(i);
+  dotsEl.appendChild(d);
+});
+
+function go(idx){
+  if(transitioning) return;
+  if(idx<0||idx>=slides.length) return;
+  if(idx===currentSlide) return;
+  transitioning=true;
+  const prev=currentSlide;
+  slides[prev].classList.add('exit');
+  slides[prev].classList.remove('active');
+  setTimeout(()=>{ slides[prev].classList.remove('exit'); },650);
+  slides[idx].classList.add('active');
+  currentSlide=idx;
+  dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===idx));
+  countEl.textContent=(idx+1)+' / '+slides.length;
+  document.getElementById('nav-prev').classList.toggle('disabled',idx===0);
+  document.getElementById('nav-next').classList.toggle('disabled',idx===slides.length-1);
+  setTimeout(()=>{ transitioning=false; },650);
+}
+
+// keyboard nav
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') go(currentSlide+1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') go(currentSlide-1);
+});
+
+// swipe
+let tx=null;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(tx===null) return;
+  const dx=e.changedTouches[0].clientX-tx; tx=null;
+  if(Math.abs(dx)>40){ dx<0?go(currentSlide+1):go(currentSlide-1); }
+},{passive:true});
+
+// ── confetti ──
+function launchConfetti(){
+  const canvas=document.getElementById('confetti-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const pieces=[];
+  const COLORS=['#f6c94e','#f56b8b','#9b7cf8','#4ecdc4','#ffffff'];
+  for(let i=0;i<140;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:-10-Math.random()*canvas.height*.5,
+      r:Math.random()*6+3,
+      col:COLORS[Math.floor(Math.random()*COLORS.length)],
+      vx:(Math.random()-0.5)*4,
+      vy:Math.random()*4+2,
+      rot:Math.random()*Math.PI*2,
+      vrot:(Math.random()-.5)*.12,
+      shape:Math.random()>.5?'rect':'circle'
+    });
+  }
+  let alive=true, frames=0;
+  function draw(){
+    if(!alive) return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.08; p.rot+=p.vrot;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle=p.col; ctx.globalAlpha=Math.min(1,(canvas.height-p.y)/(canvas.height*.3));
+      if(p.shape==='rect'){ ctx.fillRect(-p.r,-p.r*.5,p.r*2,p.r); }
+      else { ctx.beginPath(); ctx.arc(0,0,p.r*.7,0,Math.PI*2); ctx.fill(); }
+      ctx.restore();
+    });
+    frames++;
+    if(frames>280){ alive=false; ctx.clearRect(0,0,canvas.width,canvas.height); return; }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+</script>
 
